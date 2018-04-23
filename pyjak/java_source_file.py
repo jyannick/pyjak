@@ -28,7 +28,7 @@ class JavaSourceFile:
     @lazy_property
     def package(self):
         for line in self._real_code_lines:
-            match = re.match(r"package ([\w\.]*);", line)
+            match = re.match(r"package ([\w.]*);", line)
             if match:
                 return match.group(1)
         else:
@@ -38,7 +38,7 @@ class JavaSourceFile:
     def imports(self):
         imports = list()
         for line in self._real_code_lines:
-            match = re.match(r"import ([\w\.]*);", line)
+            match = re.match(r"import ([\w.]*);", line)
             if match:
                 imports.append(match.group(1))
         return imports

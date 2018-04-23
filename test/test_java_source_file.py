@@ -65,5 +65,6 @@ class TestJavaSourceFile(unittest.TestCase):
     def test_is_java_source_file(self):
         self.assertEqual(True, is_java_source_file(SOURCE_FILE_HELLO_WORLD))
 
+
 if __name__ == '__main__':
     unittest.main()

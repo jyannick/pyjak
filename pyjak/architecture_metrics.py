@@ -27,7 +27,7 @@ def build_imports_inside_module(sources):
     for source in sources:
         for import_ in source.imports:
             if import_ in imports_inside_module.keys():
-                imports_inside_module[import_]+=1
+                imports_inside_module[import_] += 1
     return imports_inside_module
 
 
