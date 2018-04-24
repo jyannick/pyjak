@@ -12,6 +12,7 @@ class TestArchitectureMetrics(unittest.TestCase):
     def setUp(self):
         self.sources = am.scan_directory(RESOURCES, ENCODING)
         self.imports_inside_module = am.build_imports_inside_module(self.sources)
+        self.parser = am.create_parser()
 
     def check_console_output(self, mock_stdout):
         with open(os.path.join(RESOURCES, "expected_console_output_for_lines_of_code.txt"), "r") as f:
@@ -24,9 +25,30 @@ class TestArchitectureMetrics(unittest.TestCase):
         self.assertEqual(sorted(number_of_code_lines), number_of_code_lines,
                          "Printed lines are not ordered by length of the source files")
 
+    @unittest.mock.patch('sys.stderr', new_callable=io.StringIO)
+    def test_parser_no_arguments(self, mock_stderr):
+        with self.assertRaises(SystemExit):
+            try:
+                self.parser.parse_args([])
+            except SystemExit as e:
+                self.assertIn("usage:", mock_stderr.getvalue(), "Running without arguments does not display the usage")
+                raise e
+
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
-    def test_main(self, mock_stdout):
-        am.main(RESOURCES, ENCODING)
+    def test_parser_directory_only(self, mock_stdout):
+        args = self.parser.parse_args([RESOURCES])
+        am.main_from_args(args)
+        self.check_console_output(mock_stdout)
+
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_parser_directory_and_encoding(self, mock_stdout):
+        args = self.parser.parse_args([RESOURCES, '--encoding', ENCODING])
+        am.main_from_args(args)
+        self.check_console_output(mock_stdout)
+
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def test_analyze(self, mock_stdout):
+        am.analyze(RESOURCES, ENCODING)
         self.check_console_output(mock_stdout)
 
     def test_scan_directory(self):

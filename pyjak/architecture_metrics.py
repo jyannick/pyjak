@@ -3,8 +3,28 @@ import os
 
 from pyjak import java_source_file
 
+DEFAULT_ENCODING: str = "utf-8"
 
-def main(directory, encoding):
+
+def main():
+    parser = create_parser()
+    args = parser.parse_args()
+    main_from_args(args)
+
+
+def main_from_args(args):
+    analyze(args.directory, args.encoding)
+
+
+def create_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("directory", help="directory containing the source code to analyze")
+    parser.add_argument("--encoding", action="store", default=DEFAULT_ENCODING,
+                        help=f"encoding of the source files (default {DEFAULT_ENCODING})")
+    return parser
+
+
+def analyze(directory, encoding=DEFAULT_ENCODING):
     sources = scan_directory(directory, encoding)
     imports_inside_module = build_imports_inside_module(sources)
     console_output_by_loc(sources, imports_inside_module)
@@ -41,10 +61,4 @@ def console_output_by_loc(sources, imports_inside_module):
 
 
 if __name__ == '__main__':
-    default_encoding = "utf-8"
-    parser = argparse.ArgumentParser()
-    parser.add_argument("directory", help="directory containing the source code to analyze")
-    parser.add_argument("--encoding", action="store", default=default_encoding,
-                        help=f"encoding of the source files (default {default_encoding})")
-    args = parser.parse_args()
-    main(args.directory, args.encoding)
+    main()
