@@ -4,7 +4,7 @@ import unittest.mock
 
 import pyjak.architecture_metrics as am
 
-RESOURCES = "resources"
+RESOURCES = os.path.join(os.path.dirname(__file__), "resources")
 ENCODING = "utf-8"
 
 

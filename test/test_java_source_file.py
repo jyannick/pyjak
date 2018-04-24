@@ -2,7 +2,7 @@ import os
 import unittest
 from pyjak.java_source_file import JavaSourceFile, is_java_source_file
 
-RESOURCES = "resources"
+RESOURCES = os.path.join(os.path.dirname(__file__), "resources")
 BASENAME_HELLO_WORLD = "HelloWorld.java"
 BASENAME_WITH_IMPORTS = "ClassWithImports.java"
 PACKAGE = os.path.join("com", "test", "a_package")
