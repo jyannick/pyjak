@@ -15,22 +15,26 @@ def main():
 
 
 def main_from_args(args):
-    analyze(args.directory, args.encoding)
+    analyze(args.module, args.encoding)
 
 
 def create_parser():
     parser = GooeyParser()
-    parser.add_argument("directory", help="directory containing the source code to analyze", default=os.getcwd(),
+    parser.add_argument("-m", "--module", action="append", required=True,
+                        help="directory containing the source code to analyze",
                         widget="DirChooser")
     parser.add_argument("--encoding", action="store", default=DEFAULT_ENCODING,
                         help=f"encoding of the source files (default {DEFAULT_ENCODING})")
     return parser
 
 
-def analyze(directory, encoding=DEFAULT_ENCODING):
-    sources = scan_directory(directory, encoding)
-    imports_inside_module = build_imports_inside_module(sources)
-    console_output_by_loc(sources, imports_inside_module)
+def analyze(directories, encoding=DEFAULT_ENCODING):
+    for directory in directories:
+        if len(directories) > 1:
+            print(f"\nAnalyzing module in directory {directory}")
+        sources = scan_directory(directory, encoding)
+        imports_inside_module = build_imports_inside_module(sources)
+        console_output_by_loc(sources, imports_inside_module)
 
 
 def scan_directory(directory, encoding):
@@ -60,7 +64,7 @@ def console_output_by_loc(sources, imports_inside_module):
         print('\t'.join([f"{source.qualified_name:100}",
                          f"{(source.lines_of_code/1000):10.3f} kLOC",
                          f"{source.number_of_imports:5} imports",
-                         f"{imports_inside_module[source.qualified_name]:5} time imported"]))
+                         f"{imports_inside_module[source.qualified_name]:5} times imported inside module"]))
 
 
 if __name__ == '__main__':

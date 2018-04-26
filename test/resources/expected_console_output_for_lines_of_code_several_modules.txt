@@ -1,0 +1,11 @@
+com.test.a_package.ClassWithoutImport                                                               	     0.007 kLOC	    0 imports	    0 times imported inside module
+com.test.a_package.HelloWorld                                                                       	     0.007 kLOC	    0 imports	    0 times imported inside module
+com.test.a_package.ClassWithImports                                                                 	     0.012 kLOC	    5 imports	    0 times imported inside module
+
+com.test.another_package.ClassWithoutImport                                                         	     0.007 kLOC	    0 imports	    1 times imported inside module
+com.test.another_package.HelloWorld                                                                 	     0.007 kLOC	    0 imports	    1 times imported inside module
+com.test.another_package.ClassWithImports                                                           	     0.012 kLOC	    5 imports	    0 times imported inside module
+
+com.test.wow_yet_another.HelloWorld                                                                 	     0.007 kLOC	    0 imports	    1 times imported inside module
+com.test.wow_yet_another.ClassWithoutImport                                                         	     0.007 kLOC	    0 imports	    0 times imported inside module
+com.test.wow_yet_another.ClassWithImports                                                           	     0.012 kLOC	    5 imports	    0 times imported inside module
