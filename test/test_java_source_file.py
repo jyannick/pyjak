@@ -2,7 +2,7 @@ import os
 import unittest
 from pyjak.java_source_file import JavaSourceFile, is_java_source_file
 
-RESOURCES = "resources"
+RESOURCES = os.path.join(os.path.dirname(__file__), "resources")
 BASENAME_HELLO_WORLD = "HelloWorld.java"
 BASENAME_WITH_IMPORTS = "ClassWithImports.java"
 PACKAGE = os.path.join("com", "test", "a_package")
@@ -64,6 +64,7 @@ class TestJavaSourceFile(unittest.TestCase):
 
     def test_is_java_source_file(self):
         self.assertEqual(True, is_java_source_file(SOURCE_FILE_HELLO_WORLD))
+
 
 if __name__ == '__main__':
     unittest.main()
