@@ -50,6 +50,11 @@ jobs:
             coverage html -d test-reports/html
             mkdir -p test-reports/unittest && mv TEST-*.xml test-reports/unittest
 
+      - run:
+          name: CodeCov upload
+          command: |
+            bash <(curl -s https://codecov.io/bash)
+
       - store_test_results:
           path: test-reports
 
