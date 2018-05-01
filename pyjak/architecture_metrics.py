@@ -2,8 +2,8 @@ import os
 
 from gooey import Gooey, GooeyParser
 
-from pyjak import java_source_file
-from pyjak.code_module import CodeModule
+from pyjak.entities import java_source_file
+from pyjak.entities.code_module import CodeModule
 
 DEFAULT_ENCODING: str = "utf-8"
 

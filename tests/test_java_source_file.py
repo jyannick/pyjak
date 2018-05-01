@@ -1,6 +1,6 @@
 import os
 import unittest
-from pyjak.java_source_file import JavaSourceFile, is_java_source_file
+from pyjak.entities.java_source_file import JavaSourceFile, is_java_source_file
 
 RESOURCES = os.path.join(os.path.dirname(__file__), "resources")
 BASENAME_HELLO_WORLD = "HelloWorld.java"

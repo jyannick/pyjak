@@ -3,7 +3,7 @@ import os
 import unittest.mock
 
 import pyjak.architecture_metrics as am
-from pyjak.code_module import CodeModule
+from pyjak.entities.code_module import CodeModule
 
 RESOURCES = os.path.join(os.path.dirname(__file__), "resources")
 A_PACKAGE = os.path.join(RESOURCES, "com", "test", "a_package")
