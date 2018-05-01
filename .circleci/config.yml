@@ -44,7 +44,14 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
-            python3 -m unittest discover test
+            coverage run --source pyjak -m xmlrunner discover tests
+            coverage report
+            coverage xml -o test-reports/coverage.xml
+            coverage html -d test-reports/html
+            mkdir -p test-reports/unittest && mv TEST-*.xml test-reports/unittest
+
+      - store_test_results:
+          path: test-reports
 
       - store_artifacts:
           path: test-reports
