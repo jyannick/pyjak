@@ -2,4 +2,5 @@
 # file format is described here :
 # https://pip.pypa.io/en/stable/reference/pip_install/#requirements-file-format
 
-# pyjak has currently no dependencies
+coverage
+unittest-xml-reporting
