@@ -3,6 +3,7 @@ import os
 import unittest.mock
 
 import pyjak.architecture_metrics as am
+from pyjak.code_module import CodeModule
 
 RESOURCES = os.path.join(os.path.dirname(__file__), "resources")
 A_PACKAGE = os.path.join(RESOURCES, "com", "test", "a_package")
@@ -13,8 +14,7 @@ ENCODING = "utf-8"
 
 class TestArchitectureMetrics(unittest.TestCase):
     def setUp(self):
-        self.sources = am.scan_directory(RESOURCES, ENCODING)
-        self.imports_inside_module = am.build_imports_inside_module(self.sources)
+        self.module = CodeModule(am.scan_directory(RESOURCES, ENCODING))
         self.parser = am.create_parser()
 
     def check_console_output_for_lines_of_code(self, mock_stdout):
@@ -72,7 +72,7 @@ class TestArchitectureMetrics(unittest.TestCase):
         self.check_console_output_for_lines_of_code(mock_stdout)
 
     def test_scan_directory(self):
-        self.assertEqual(9, len(self.sources), "Incorrect number of source files detected while scanning the directory")
+        self.assertEqual(9, len(self.module.source_files), "Incorrect number of source files detected while scanning the directory")
 
     def test_build_imports_inside_module(self):
         self.assertEqual({'com.test.a_package.ClassWithImports': 0,
@@ -84,11 +84,11 @@ class TestArchitectureMetrics(unittest.TestCase):
                           'com.test.wow_yet_another.ClassWithImports': 0,
                           'com.test.wow_yet_another.ClassWithoutImport': 0,
                           'com.test.wow_yet_another.HelloWorld': 3},
-                         self.imports_inside_module)
+                         self.module.internal_imports)
 
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_console_output_by_loc(self, mock_stdout):
-        am.console_output_by_loc(self.sources, self.imports_inside_module)
+        am.console_output_by_loc(self.module)
         self.check_console_output_for_lines_of_code(mock_stdout)
 
 

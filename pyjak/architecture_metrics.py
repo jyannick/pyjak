@@ -3,6 +3,7 @@ import os
 from gooey import Gooey, GooeyParser
 
 from pyjak import java_source_file
+from pyjak.code_module import CodeModule
 
 DEFAULT_ENCODING: str = "utf-8"
 
@@ -32,9 +33,8 @@ def analyze(directories, encoding=DEFAULT_ENCODING):
     for directory in directories:
         if len(directories) > 1:
             print(f"\nAnalyzing module in directory {directory}")
-        sources = scan_directory(directory, encoding)
-        imports_inside_module = build_imports_inside_module(sources)
-        console_output_by_loc(sources, imports_inside_module)
+        module = CodeModule(scan_directory(directory, encoding))
+        console_output_by_loc(module)
 
 
 def scan_directory(directory, encoding):
@@ -47,24 +47,13 @@ def scan_directory(directory, encoding):
     return sources
 
 
-def build_imports_inside_module(sources):
-    imports_inside_module = dict()
-    for source in sources:
-        imports_inside_module[source.qualified_name] = 0
-    for source in sources:
-        for import_ in source.imports:
-            if import_ in imports_inside_module.keys():
-                imports_inside_module[import_] += 1
-    return imports_inside_module
-
-
-def console_output_by_loc(sources, imports_inside_module):
-    sources_by_loc = sorted(sources, key=lambda s: s.lines_of_code)
+def console_output_by_loc(module):
+    sources_by_loc = sorted(module.source_files, key=lambda s: s.lines_of_code)
     for source in sources_by_loc:
         print('\t'.join([f"{source.qualified_name:100}",
                          f"{(source.lines_of_code/1000):10.3f} kLOC",
                          f"{source.number_of_imports:5} imports",
-                         f"{imports_inside_module[source.qualified_name]:5} times imported inside module"]))
+                         f"{module.internal_imports[source.qualified_name]:5} times imported inside module"]))
 
 
 if __name__ == '__main__':
