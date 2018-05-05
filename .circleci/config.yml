@@ -28,22 +28,49 @@ jobs:
           - v1-dependencies-
 
       - run:
-          name: install dependencies
+          name: Installing OS dependencies
           command: |
-            python3 -m venv venv
-            . venv/bin/activate
+            sudo apt-get update
+            sudo apt-get install python-wxgtk3.0
+
+      - run:
+          name: Installing Miniconda
+          # Getting Gooey to install properly on standard python is a nightmare, due to the wxpython dependency
+          # which is not packaged properly in the CircleCI Ubuntu version. Pip does not work well either.
+          # Conda is actually the recommended way to install wx-python according to the wx-python website !
+          command: |
+            if [ -d "../miniconda3/envs/condaenv" ]; then
+              echo "Miniconda already installed, skipping this step"
+            else
+              echo "Installing Miniconda"
+              wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+              chmod +x ./Miniconda3-latest-Linux-x86_64.sh
+              ./Miniconda3-latest-Linux-x86_64.sh -b
+              export PATH=$HOME/miniconda3/bin:$PATH
+              conda update --quiet --yes conda
+              conda create --name condaenv --yes
+            fi
+
+      - run:
+          name: Installing Python dependencies
+          command: |
+            export PATH=$HOME/miniconda3/bin:$PATH
+            source activate condaenv
+            conda install --quiet --yes -n condaenv wxpython
+            conda install --quiet --yes -n condaenv -c sradiouy gooey
             pip install -r requirements.txt
 
       - save_cache:
           paths:
-            - ./venv
+            - ../miniconda3/
           key: v1-dependencies-{{ checksum "requirements.txt" }}
 
       # run tests!
       - run:
           name: run tests
           command: |
-            . venv/bin/activate
+            export PATH=$HOME/miniconda3/bin:$PATH
+            source activate condaenv
             coverage run --source pyjak -m xmlrunner discover tests
             coverage report
             coverage xml -o test-reports/coverage.xml

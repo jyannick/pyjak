@@ -1,11 +1,13 @@
-import argparse
 import os
+
+from gooey import Gooey, GooeyParser
 
 from pyjak import java_source_file
 
 DEFAULT_ENCODING: str = "utf-8"
 
 
+@Gooey(program_name="Pyjak", terminal_font_family="Courier", default_size=(1400, 800))
 def main():
     parser = create_parser()
     args = parser.parse_args()
@@ -17,8 +19,9 @@ def main_from_args(args):
 
 
 def create_parser():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("directory", help="directory containing the source code to analyze")
+    parser = GooeyParser()
+    parser.add_argument("directory", help="directory containing the source code to analyze", default=os.getcwd(),
+                        widget="DirChooser")
     parser.add_argument("--encoding", action="store", default=DEFAULT_ENCODING,
                         help=f"encoding of the source files (default {DEFAULT_ENCODING})")
     return parser
