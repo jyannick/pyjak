@@ -8,7 +8,7 @@ from pyjak.entities.code_module import CodeModule
 DEFAULT_ENCODING: str = "utf-8"
 
 
-@Gooey(program_name="Pyjak", terminal_font_family="Courier", default_size=(1400, 800))
+@Gooey(program_name="Pyjak", terminal_font_family="Courier", default_size=(1500, 800))
 def main():
     parser = create_parser()
     args = parser.parse_args()
@@ -51,7 +51,7 @@ def console_output_by_loc(module):
     sources_by_loc = sorted(module.source_files, key=lambda s: s.lines_of_code)
     for source in sources_by_loc:
         print('\t'.join([f"{source.qualified_name:100}",
-                         f"{(source.lines_of_code/1000):10.3f} kLOC",
+                         f"{(source.lines_of_code/1000):10.3f} kSLOC",
                          f"{source.number_of_imports:5} imports",
                          f"{module.internal_imports[source.qualified_name]:5} times imported inside module"]))
 
