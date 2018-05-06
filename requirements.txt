@@ -5,3 +5,4 @@
 coverage
 unittest-xml-reporting
 -e git+https://github.com/chriskiehl/Gooey.git#egg=gooey # Using git version to limit dependency hell with wx-python
+pyinstaller

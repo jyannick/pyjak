@@ -82,9 +82,20 @@ jobs:
           command: |
             bash <(curl -s https://codecov.io/bash)
 
+      - run:
+          name: Building executable
+          command: |
+            export PATH=$HOME/miniconda3/bin:$PATH
+            source activate condaenv
+            pyinstaller build.spec
+
       - store_test_results:
           path: test-reports
 
       - store_artifacts:
           path: test-reports
           destination: test-reports
+
+      - store_artifacts:
+          path: dist
+          destination: dist
