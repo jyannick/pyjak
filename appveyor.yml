@@ -42,5 +42,10 @@ test_script:
   - python -c "import sys; print(sys.executable)"
   - python -c "import sys; print(sys.prefix)"
   - python --version
+  - pyinstaller build.spec
   - python -m coverage run --source pyjak -m xmlrunner discover tests
   - python -m coverage report
+
+artifacts:
+  - path: dist\Pyjak.exe
+    name: Pyjak.exe
