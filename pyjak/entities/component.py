@@ -1,7 +1,7 @@
 from pyjak.toolbox import lazy_property
 
 
-class CodeModule(object):
+class Component(object):
     def __init__(self, source_files):
         self.source_files = source_files
 

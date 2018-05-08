@@ -3,7 +3,7 @@ import os
 import unittest.mock
 
 import pyjak.architecture_metrics as am
-from pyjak.entities.code_module import CodeModule
+from pyjak.entities.component import Component
 
 RESOURCES = os.path.join(os.path.dirname(__file__), "resources")
 A_PACKAGE = os.path.join(RESOURCES, "com", "test", "a_package")
@@ -14,7 +14,7 @@ ENCODING = "utf-8"
 
 class TestArchitectureMetrics(unittest.TestCase):
     def setUp(self):
-        self.module = CodeModule(am.scan_directory(RESOURCES, ENCODING))
+        self.module = Component(am.scan_directory(RESOURCES, ENCODING))
         self.parser = am.create_parser()
 
     def check_console_output_for_lines_of_code(self, mock_stdout):

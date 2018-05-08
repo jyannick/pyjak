@@ -3,7 +3,7 @@ import os
 from gooey import Gooey, GooeyParser
 
 from pyjak.entities import java_source_file
-from pyjak.entities.code_module import CodeModule
+from pyjak.entities.component import Component
 
 DEFAULT_ENCODING: str = "utf-8"
 
@@ -33,7 +33,7 @@ def analyze(directories, encoding=DEFAULT_ENCODING):
     for directory in directories:
         if len(directories) > 1:
             print(f"\nAnalyzing module in directory {directory}")
-        module = CodeModule(scan_directory(directory, encoding))
+        module = Component(scan_directory(directory, encoding))
         console_output_by_loc(module)
 
 
