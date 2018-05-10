@@ -3,9 +3,11 @@ import re
 
 from pyjak.toolbox import lazy_property
 
+DEFAULT_ENCODING = "utf-8"
+
 
 class JavaSourceFile:
-    def __init__(self, file, encoding):
+    def __init__(self, file, encoding=DEFAULT_ENCODING):
         self.file = file
         self.encoding = encoding
 
@@ -61,6 +63,12 @@ class JavaSourceFile:
             return lines[:-1]
         else:
             return lines
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
+    def __hash__(self):
+        return hash(self.__dict__.values())
 
 
 def is_java_source_file(file):

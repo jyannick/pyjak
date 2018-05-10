@@ -5,7 +5,7 @@ from gooey import Gooey, GooeyParser
 from pyjak.entities import java_source_file
 from pyjak.entities.component import Component
 
-DEFAULT_ENCODING: str = "utf-8"
+DEFAULT_ENCODING: str = java_source_file.DEFAULT_ENCODING
 
 
 @Gooey(program_name="Pyjak", terminal_font_family="Courier", default_size=(1500, 800))

@@ -11,9 +11,4 @@ ENCODING = "utf-8"
 
 
 class TestSoftwareComponent(unittest.TestCase):
-
-    def setUp(self):
-        self.a_component = Component(A_PACKAGE, JavaSourceFile)
-
-    def test_init(self):
-        self.assertEqual(["something"], self.a_component.source_files)
+    pass
