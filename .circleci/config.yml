@@ -99,3 +99,65 @@ jobs:
       - store_artifacts:
           path: dist
           destination: dist
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - dist/*
+
+  deploy:
+      working_directory: ~/repo
+
+      docker:
+        - image: circleci/python:3.6.1
+
+      steps:
+        - checkout
+        - attach_workspace:
+            at: /tmp/workspace
+
+        - run:
+            name: Installing github-release
+            command: |
+              if [ -d "$HOME/github-release/bin/linux/amd64" ]; then
+                echo "github-release already installed, skipping this step"
+              else
+                echo "Installing github-release"
+                mkdir $HOME/github-release
+                cd $HOME/github-release
+                wget https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2
+                tar jxf linux-amd64-github-release.tar.bz2
+              fi
+
+
+        - run:
+            name: Releasing new version
+            command: |
+              export PATH=$HOME/github-release/bin/linux/amd64:$PATH
+              cd ~/repo
+              previous_version_tag=`git tag -l | tail -2 |head -1`
+              current_version_tag=`git describe --tags`
+              changelog=`git log ${previous_version_tag}..HEAD --oneline --no-merges | grep -v PRO`
+              description=`echo "### Description" && echo "This is Pyjak version ${current_version_tag}." && echo "### Changelog" && echo "Improvements since ${previous_version_tag} are:" && echo "$changelog"`
+              github-release edit --user jyannick --repo pyjak --tag ${current_version_tag} --name "${current_version_tag}" --description "${description}"
+              github-release upload --user jyannick --repo pyjak --tag ${current_version_tag} --name "Pyjak-${current_version_tag}-linux" --file /tmp/workspace/dist/*
+
+workflows:
+  version: 2
+  build-n-deploy:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /.*/
+      - deploy:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
+
+
