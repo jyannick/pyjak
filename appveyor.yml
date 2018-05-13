@@ -48,4 +48,15 @@ test_script:
 
 artifacts:
   - path: dist\Pyjak.exe
-    name: Pyjak.exe
+    name: Pyjak.exe # TODO use tag name here if applicable
+
+deploy:
+  provider: GitHub
+  auth_token:
+    secure: JySvb0sazE6HBTczvT08luwGUZDThDYvjGS0v/Xoilcoc8t1k9uj2n+V7itSLDwO
+  artifact: Pyjak.exe
+  draft: false
+  prerelease: false
+  on:
+    branch: master                 # release from master branch only
+    appveyor_repo_tag: true        # deploy on tag push only
